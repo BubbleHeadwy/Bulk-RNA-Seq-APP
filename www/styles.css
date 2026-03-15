@@ -1,0 +1,70 @@
+body {
+  background: linear-gradient(180deg, #f4f7fb 0%, #ffffff 100%);
+}
+
+.app-card {
+  background: #ffffff;
+  border-radius: 16px;
+  box-shadow: 0 10px 30px rgba(15, 23, 42, 0.08);
+  padding: 18px;
+  margin-bottom: 16px;
+}
+
+.help-text {
+  color: #475569;
+  font-size: 0.95em;
+}
+
+.global-status-wrap {
+  padding: 8px 0 16px 0;
+}
+
+.global-status {
+  border-radius: 14px;
+  padding: 12px 16px;
+  border: 1px solid transparent;
+  max-width: 980px;
+}
+
+.global-status-title {
+  font-weight: 700;
+  margin-bottom: 4px;
+}
+
+.global-status-detail {
+  font-size: 0.95em;
+}
+
+.status-info {
+  background: #eff6ff;
+  border-color: #bfdbfe;
+  color: #1d4ed8;
+}
+
+.status-running {
+  background: #fff7ed;
+  border-color: #fdba74;
+  color: #c2410c;
+}
+
+.status-success {
+  background: #ecfdf5;
+  border-color: #86efac;
+  color: #15803d;
+}
+
+.status-error {
+  background: #fef2f2;
+  border-color: #fca5a5;
+  color: #b91c1c;
+}
+
+table.dataTable tbody tr.selected {
+  background-color: #dbeafe !important;
+}
+
+.btn.disabled,
+.btn:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+}

@@ -1,0 +1,73 @@
+{
+  "name": "bulkseq-visualization-desktop",
+  "version": "0.1.0",
+  "description": "Bulk RNA-seq desktop app",
+  "main": "main.js",
+  "scripts": {
+    "dev": "electron .",
+    "pack": "electron-builder --dir",
+    "dist": "electron-builder",
+    "prepare-runtime": "powershell -ExecutionPolicy Bypass -File ../scripts/prepare_runtime.ps1",
+    "dist:win-offline": "electron-builder --win nsis portable",
+    "build:win-offline": "powershell -ExecutionPolicy Bypass -File ../scripts/build_windows_offline.ps1"
+  },
+  "devDependencies": {
+    "electron": "^37.2.0",
+    "electron-builder": "^26.0.12"
+  },
+  "build": {
+    "appId": "com.bulkseq.visualization",
+    "productName": "BulkSeq Visualization",
+    "asar": false,
+    "directories": {
+      "output": "../dist"
+    },
+    "files": [
+      "main.js",
+      "package.json"
+    ],
+    "extraResources": [
+      {
+        "from": "../app.R",
+        "to": "app-bundle/app.R"
+      },
+      {
+        "from": "../R",
+        "to": "app-bundle/R",
+        "filter": [
+          "common.R",
+          "helpers_*.R",
+          "mod_*.R"
+        ]
+      },
+      {
+        "from": "../scripts",
+        "to": "app-bundle/scripts",
+        "filter": [
+          "launch_app.R",
+          "common.R"
+        ]
+      },
+      {
+        "from": "../www",
+        "to": "app-bundle/www",
+        "filter": [
+          "**/*"
+        ]
+      },
+      {
+        "from": "../runtime",
+        "to": "runtime",
+        "filter": [
+          "**/*"
+        ]
+      }
+    ],
+    "win": {
+      "target": [
+        "nsis",
+        "portable"
+      ]
+    }
+  }
+}

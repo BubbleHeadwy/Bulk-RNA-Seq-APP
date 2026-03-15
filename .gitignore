@@ -1,0 +1,12 @@
+app_cache/
+dist/
+release/
+portable-r/
+runtime/
+node_modules/
+electron-builder-cache/
+*.log
+*.tmp
+*.zip
+*.exe
+*.7z
