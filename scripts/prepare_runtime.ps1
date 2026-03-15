@@ -53,6 +53,7 @@ New-Item -ItemType Directory -Path $runtimePath | Out-Null
 $runtimeRDir = Join-Path $runtimePath "R"
 $runtimeLibRealDir = Join-Path $runtimeRDir "library"
 $runtimeLibLinkDir = Join-Path $runtimePath "library"
+$runtimeRscript = Join-Path $runtimeRDir "bin\\Rscript.exe"
 
 Copy-Item -Path $portableRPath -Destination $runtimeRDir -Recurse -Force
 if (-not (Test-Path -Path $runtimeLibRealDir -PathType Container)) {
@@ -61,9 +62,14 @@ if (-not (Test-Path -Path $runtimeLibRealDir -PathType Container)) {
 Ensure-LibraryJunction -LinkPath $runtimeLibLinkDir -TargetPath $runtimeLibRealDir
 
 if (-not [string]::IsNullOrWhiteSpace($sourceLibraryPath) -and (Test-Path -Path $sourceLibraryPath -PathType Container)) {
+  $minimizeScript = Join-Path $repoRoot "scripts\\sync_minimal_runtime_lib.R"
+  if (-not (Test-Path -Path $minimizeScript -PathType Leaf)) {
+    throw "sync_minimal_runtime_lib.R not found: $minimizeScript"
+  }
   if ((Resolve-FullPath $sourceLibraryPath) -ne (Resolve-FullPath $runtimeLibRealDir)) {
-    Get-ChildItem -Path $sourceLibraryPath -Force | ForEach-Object {
-      Copy-Item -Path $_.FullName -Destination $runtimeLibRealDir -Recurse -Force
+    & $runtimeRscript $minimizeScript "--source-lib=$sourceLibraryPath" "--target-lib=$runtimeLibRealDir"
+    if ($LASTEXITCODE -ne 0) {
+      throw "Minimal runtime library sync failed with exit code $LASTEXITCODE."
     }
   }
 }
@@ -73,7 +79,6 @@ if ($InstallMissing) {
   if (-not (Test-Path -Path $installScript -PathType Leaf)) {
     throw "install_runtime_deps.R not found: $installScript"
   }
-  $runtimeRscript = Join-Path $runtimeRDir "bin\\Rscript.exe"
   & $runtimeRscript $installScript "--lib=$runtimeLibRealDir"
   if ($LASTEXITCODE -ne 0) {
     throw "Runtime dependency installation failed with exit code $LASTEXITCODE."

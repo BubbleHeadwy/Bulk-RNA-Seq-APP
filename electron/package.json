@@ -1,6 +1,6 @@
 {
   "name": "bulkseq-visualization-desktop",
-  "version": "0.1.0",
+  "version": "0.1.2",
   "description": "Bulk RNA-seq desktop app",
   "main": "main.js",
   "scripts": {
@@ -8,7 +8,7 @@
     "pack": "electron-builder --dir",
     "dist": "electron-builder",
     "prepare-runtime": "powershell -ExecutionPolicy Bypass -File ../scripts/prepare_runtime.ps1",
-    "dist:win-offline": "electron-builder --win nsis portable",
+    "dist:win-offline": "electron-builder --win nsis",
     "build:win-offline": "powershell -ExecutionPolicy Bypass -File ../scripts/build_windows_offline.ps1"
   },
   "devDependencies": {
@@ -65,9 +65,12 @@
     ],
     "win": {
       "target": [
-        "nsis",
-        "portable"
+        "nsis"
       ]
+    },
+    "nsis": {
+      "oneClick": false,
+      "allowToChangeInstallationDirectory": true
     }
   }
 }
