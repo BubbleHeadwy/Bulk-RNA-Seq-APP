@@ -6,7 +6,7 @@
 - 加载已有结果目录（results）进行可视化分析。
 - 从 BAM/GTF/sample sheet 运行新分析流程。
 - 支持 PCA、Volcano、Heatmap、GO 富集、结果导出。
-- 桌面封装后可离线运行（内置 R 与依赖库）。
+- 无需额外配置环境（内置 R 与依赖库）。
 
 ## 目录说明
 - app.R: 应用入口
@@ -15,7 +15,6 @@
 - electron/: Electron 壳与打包配置
 - www/: 前端样式资源
 - runtime/: 内置运行环境（可重建）
-- dist/: 打包产物（可删除后重建）
 - legacy/cli_pipeline/: 历史 CLI 脚本归档
 
 ## 源码运行
