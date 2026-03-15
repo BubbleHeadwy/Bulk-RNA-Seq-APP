@@ -1,53 +1,82 @@
-# Bulk RNA-seq Desktop App (Windows)
+﻿# Bulk RNA-seq App (Windows)
 
-鏈」鐩槸涓€涓熀浜?`Shiny + Electron` 鐨?Bulk RNA-seq 妗岄潰搴旂敤锛屽綋鍓嶄粎鏀寔 Windows銆?
-## 鐩爣鍙戝竷褰㈡€?- 婧愮爜鍙戝竷锛氭彁浜ゅ埌 GitHub 浠撳簱锛堜笉鎻愪氦瀹夎鍖呭拰 runtime 浜岃繘鍒讹級銆?- 瀹夎鍖呭彂甯冿細閫氳繃 GitHub Releases 鍒嗗彂 Windows `nsis` 瀹夎鍣ㄥ拰 `portable exe`銆?- 渚濊禆绛栫暐锛氱绾垮唴缃?`runtime/R` 涓?`runtime/library`锛屽敖閲忎笉渚濊禆鐢ㄦ埛绯荤粺鐜銆?
-## 鐩綍璇存槑
-```text
-.
-鈹溾攢 app.R
-鈹溾攢 R/
-鈹? 鈹溾攢 common.R
-鈹? 鈹溾攢 helpers_*.R
-鈹? 鈹斺攢 mod_*.R
-鈹溾攢 electron/
-鈹溾攢 scripts/
-鈹溾攢 www/
-鈹斺攢 legacy/
-   鈹斺攢 cli_pipeline/
-```
+这是一个基于 Shiny + Electron 的 Bulk RNA-seq 桌面应用，当前仅支持 Windows。
 
-`legacy/cli_pipeline/` 瀛樻斁鏃х増 CLI 娴佹按绾胯剼鏈紝涓嶅弬涓庢闈㈢増杩愯涓庢墦鍖呫€?
-## 绂荤嚎瀹夎鍖呮瀯寤猴紙鎺ㄨ崘锛?### 1) 鍑嗗 runtime
-鍦ㄤ粨搴撴牴鐩綍鎵ц锛圥owerShell锛夛細
+## 功能概览
+- 加载已有结果目录（results）进行可视化分析。
+- 从 BAM/GTF/sample sheet 运行新分析流程。
+- 支持 PCA、Volcano、Heatmap、GO 富集、结果导出。
+- 桌面封装后可离线运行（内置 R 与依赖库）。
 
-```powershell
-.\scripts\prepare_runtime.ps1 -PortableRPath "D:\tools\R-portable" -SourceLibraryPath "D:\tools\R-lib" -InstallMissing
-```
+## 目录说明
+- app.R: 应用入口
+- R/: 业务模块（helpers_*.R, mod_*.R）
+- scripts/: 启动、依赖、打包脚本
+- electron/: Electron 壳与打包配置
+- www/: 前端样式资源
+- runtime/: 内置运行环境（可重建）
+- dist/: 打包产物（可删除后重建）
+- legacy/cli_pipeline/: 历史 CLI 脚本归档
 
-鍙傛暟璇存槑锛?- `-PortableRPath`锛氫究鎼哄紡 R 鏍圭洰褰曪紙蹇呴』锛岀洰褰曚笅搴旀湁 `bin\Rscript.exe`锛夈€?- `-SourceLibraryPath`锛氬彲閫夛紝宸叉湁 R 鍖呭簱鐩綍锛屼細澶嶅埗鍒?`runtime\library`銆?- `-InstallMissing`锛氬彲閫夛紝浣跨敤 `runtime\R\bin\Rscript.exe` 鍦ㄧ嚎琛ラ綈缂哄け鍖呫€?
-### 2) 鏋勫缓 Windows 瀹夎鍖?```powershell
-cd .\electron
-npm install
-npm run dist:win-offline
-```
+## 源码运行
+在项目根目录执行：
 
-鏋勫缓杈撳嚭鐩綍锛歚dist/`
-
-## 婧愮爜杩愯锛堝紑鍙戞ā寮忥級
 ```powershell
 Rscript .\scripts\install_deps.R
 Rscript .\scripts\check_env.R
 Rscript .\scripts\launch_app.R
 ```
 
-## 鎵撳寘涓庤繍琛屽叧閿偣
-- Electron 鍚姩鏃讹紝`Rscript` 鏌ユ壘椤哄簭涓猴細
-1. `resources/runtime/R/bin/Rscript.exe`锛堝畨瑁呭寘鍐呯疆锛?2. 鐜鍙橀噺 `RSCRIPT_PATH`
-3. 绯荤粺 `Rscript`
-- 杩愯鏃朵紭鍏堝皢 `runtime/library` 鍔犲叆 `.libPaths()`銆?- `app.R` 閲囩敤妯″潡鐧藉悕鍗曞姞杞斤紝閬垮厤 legacy 鑴氭湰琚鎵ц銆?
-## GitHub 鍙戝竷寤鸿
-- 浠撳簱鎻愪氦婧愮爜涓庢瀯寤鸿剼鏈紝涓嶆彁浜や互涓嬪唴瀹癸細
-- `dist/`, `release/`, `runtime/`, `*.exe`, `*.zip`, `node_modules/`
-- 鍦?GitHub Releases 涓婁紶瀹夎鍖咃紝骞堕檮甯︼細
-- 鐗堟湰鍙?- 鍖呬綋绉?- 绯荤粺瑕佹眰锛圵indows 10/11锛?- 鏄惁鍐呯疆 runtime锛堟湰椤圭洰涓哄唴缃級
+说明：
+- launch_app.R 已设置 launch.browser = FALSE，不会额外弹浏览器页面。
+
+## 打包 Windows 安装包（离线内置）
+### 1) 准备 runtime
+```powershell
+cd "D:\Codex\Bulk RNA-seq App"
+.\scripts\prepare_runtime.ps1 -PortableRPath "D:\RStudio\R-4.5.2" -SourceLibraryPath "D:\RStudio\R-4.5.2\library"
+```
+
+可选参数：
+- -InstallMissing: 同步本地最小包后，再从镜像补齐缺失依赖（仅必要时）。
+
+### 2) 打包
+```powershell
+cd "D:\Codex\Bulk RNA-seq App\electron"
+npm install
+npm run dist:win-offline
+```
+
+产物位置：
+- dist\BulkSeq Visualization Setup <version>.exe
+- dist\win-unpacked\
+
+## 安装与启动
+- 推荐使用 Setup.exe 安装。
+- 安装后从开始菜单或桌面图标启动，无需命令行。
+- 安装器支持自定义安装路径。
+
+## 版本管理
+- 版本号在 electron/package.json 的 version 字段维护。
+- 发布建议：每次发布在 GitHub Releases 附带 Setup.exe 与更新说明。
+
+## 节省磁盘空间建议
+可删除并重建：
+- dist/
+- electron/node_modules/
+- runtime/（删除后需重新 prepare_runtime）
+
+建议保留：
+- app.R, R/, scripts/, electron/main.js, electron/package.json, www/
+
+## 常见问题
+1. 启动超时（Timed out while waiting for local Shiny service）
+- 检查 runtime 是否完整。
+- 结束旧进程（BulkSeq Visualization.exe / Rscript.exe）后重试。
+
+2. 新分析报 cannot open the connection
+- 已兼容 config.yaml 缺失。
+- 仍报错时请检查输入路径是否存在、是否可读写。
+
+3. 新分析报 DESeq2 is missing
+- 重新准备 runtime（必要时加 -InstallMissing）。
