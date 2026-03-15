@@ -14,7 +14,6 @@
 - scripts/: 启动、依赖、打包脚本
 - electron/: Electron 壳与打包配置
 - www/: 前端样式资源
-- runtime/: 内置运行环境（可重建）
 - legacy/cli_pipeline/: 历史 CLI 脚本归档
 
 ## 源码运行
@@ -32,22 +31,16 @@ Rscript .\scripts\launch_app.R
 
 ## 安装与启动
 - 推荐使用 Setup.exe 安装。
-- 安装后从开始菜单或桌面图标启动，无需命令行。
+- 安装后从开始菜单或桌面图标启动。
 - 安装器支持自定义安装路径。
 
 ## 版本管理
 - 版本号在 electron/package.json 的 version 字段维护。
-- 发布建议：每次发布在 GitHub Releases 附带 Setup.exe 与更新说明。
-
 
 ## 常见问题
 1. 启动超时（Timed out while waiting for local Shiny service）
 - 检查 runtime 是否完整。
 - 结束旧进程（BulkSeq Visualization.exe / Rscript.exe）后重试。
 
-2. 新分析报 cannot open the connection
-- 已兼容 config.yaml 缺失。
-- 仍报错时请检查输入路径是否存在、是否可读写。
-
-3. 新分析报 DESeq2 is missing
+2. 新分析报 DESeq2 is missing
 - 重新准备 runtime（必要时加 -InstallMissing）。
