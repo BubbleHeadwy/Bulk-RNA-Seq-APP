@@ -30,26 +30,6 @@ Rscript .\scripts\launch_app.R
 说明：
 - launch_app.R 已设置 launch.browser = FALSE，不会额外弹浏览器页面。
 
-## 打包 Windows 安装包（离线内置）
-### 1) 准备 runtime
-```powershell
-cd "D:\Codex\Bulk RNA-seq App"
-.\scripts\prepare_runtime.ps1 -PortableRPath "D:\RStudio\R-4.5.2" -SourceLibraryPath "D:\RStudio\R-4.5.2\library"
-```
-
-可选参数：
-- -InstallMissing: 同步本地最小包后，再从镜像补齐缺失依赖（仅必要时）。
-
-### 2) 打包
-```powershell
-cd "D:\Codex\Bulk RNA-seq App\electron"
-npm install
-npm run dist:win-offline
-```
-
-产物位置：
-- dist\BulkSeq Visualization Setup <version>.exe
-- dist\win-unpacked\
 
 ## 安装与启动
 - 推荐使用 Setup.exe 安装。
@@ -60,14 +40,6 @@ npm run dist:win-offline
 - 版本号在 electron/package.json 的 version 字段维护。
 - 发布建议：每次发布在 GitHub Releases 附带 Setup.exe 与更新说明。
 
-## 节省磁盘空间建议
-可删除并重建：
-- dist/
-- electron/node_modules/
-- runtime/（删除后需重新 prepare_runtime）
-
-建议保留：
-- app.R, R/, scripts/, electron/main.js, electron/package.json, www/
 
 ## 常见问题
 1. 启动超时（Timed out while waiting for local Shiny service）
